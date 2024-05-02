@@ -1,15 +1,14 @@
 import { Routes } from '@angular/router';
-import { ProfileComponent } from './profile/profile.component';
-import { HomeComponent } from './home/home.component';
 import { MsalGuard } from '@azure/msal-angular';
+import { AuthGuard } from './helper/auth.guard';
 export const routes: Routes = [
   {
     path: 'profile',
-    component: ProfileComponent,
-    canActivate: [MsalGuard],
+    loadComponent: () => import('./profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: '',
-    component: HomeComponent,
+    loadComponent: () => import('./home/home.component').then(m => m.HomeComponent),
   },
 ];

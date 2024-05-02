@@ -1,5 +1,5 @@
 export function isIE() {
-  const userAgent = window.navigator.userAgent;
+  const userAgent = window?.navigator?.userAgent;
 
   if (userAgent.indexOf("MSIE ") > -1 || userAgent.indexOf("Trident/") > -1) {
     return true;
@@ -13,6 +13,6 @@ export function isIframe() {
   //   return;
   // }
 
-  return window !== window.parent && !window.opener;
+  return window !== window?.parent && !window?.opener;
 
 }

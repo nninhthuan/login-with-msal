@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
-import { EventType, EventMessage, InteractionStatus } from '@azure/msal-browser';
+import { EventType, EventMessage, InteractionStatus, type AuthenticationResult } from '@azure/msal-browser';
 import { filter } from 'rxjs';
 
 @Component({
@@ -22,16 +22,11 @@ export class HomeComponent implements OnInit {
         filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
       )
       .subscribe((result: EventMessage) => {
-        console.log(result);
-      });
-
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.None)
-      )
-      .subscribe(() => {
+        const payload = result.payload as AuthenticationResult;
+        this.authService.instance.setActiveAccount(payload.account);
         this.setLoginDisplay();
-      })
+      });
+      this.setLoginDisplay();
   }
 
   setLoginDisplay() {

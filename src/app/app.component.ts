@@ -1,4 +1,4 @@
-import { Component, Inject, InjectionToken, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -18,26 +18,25 @@ export function loggerCallback(logLevel: LogLevel, message: string) {
   console.log(message);
 }
 
-export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication({
-    auth: {
-      clientId: '7212db79-2659-4773-96a1-461905bda9ea',
-      authority: 'https://login.microsoftonline.com/common/',
-      redirectUri: 'http://localhost:4200',
-    },
-    cache: {
-      cacheLocation: BrowserCacheLocation.LocalStorage,
-      // storeAuthStateInCookie: isIE, // set to true for IE 11
-    },
-    system: {
-      loggerOptions: {
-        loggerCallback,
-        logLevel: LogLevel.Info,
-        piiLoggingEnabled: false,
-      },
-    },
-  });
-}
+// export function MSALInstanceFactory(): IPublicClientApplication {
+//   return new PublicClientApplication({
+//     auth: {
+//       clientId: '7212db79-2659-4773-96a1-461905bda9ea',
+//       authority: 'https://login.microsoftonline.com/common/',
+//       redirectUri: 'http://localhost:4200',
+//     },
+//     cache: {
+//       cacheLocation: BrowserCacheLocation.LocalStorage,
+//     },
+//     system: {
+//       loggerOptions: {
+//         loggerCallback,
+//         logLevel: LogLevel.Info,
+//         piiLoggingEnabled: false,
+//       },
+//     },
+//   });
+// }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
@@ -72,26 +71,26 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MatListModule,
   ],
   providers: [
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory,
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory,
-    },
-    MsalService,
-    MsalGuard,
-    MsalBroadcastService
+    // {
+    //   provide: MSAL_INSTANCE,
+    //   useFactory: MSALInstanceFactory,
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: MsalInterceptor,
+    //   multi: true,
+    // },
+    // {
+    //   provide: MSAL_GUARD_CONFIG,
+    //   useFactory: MSALGuardConfigFactory,
+    // },
+    // {
+    //   provide: MSAL_INTERCEPTOR_CONFIG,
+    //   useFactory: MSALInterceptorConfigFactory,
+    // },
+    // MsalService,
+    // MsalGuard,
+    // MsalBroadcastService
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -108,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private broadcastService: MsalBroadcastService) {}
 
   ngOnInit(): void {
-    this.isIframe = isIframe();
+    // this.isIframe = isIframe();
     this.authService.handleRedirectObservable().subscribe();
     this.broadcastService.inProgress$.pipe(
       filter((status: InteractionStatus) => status === InteractionStatus.None),
@@ -131,9 +130,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  logout() { // Add log out function here
+  logout() {
     this.authService.logoutRedirect({
-      postLogoutRedirectUri: 'http://localhost:4200'
+      postLogoutRedirectUri: '/'
     });
   }
 

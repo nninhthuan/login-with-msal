@@ -9,7 +9,7 @@ export const routes: Routes = [
     canActivate: [MsalGuard],
   },
   {
-    path: "",
+    path: '',
     component: HomeComponent,
   },
 ];
